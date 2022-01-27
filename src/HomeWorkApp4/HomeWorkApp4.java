@@ -54,6 +54,8 @@ public class HomeWorkApp4 {
                 break;
             }
         }
+
+
         System.out.println(" ");
         System.out.println("ИГРА ОКОНЧЕНА!");
     }
@@ -65,15 +67,20 @@ public class HomeWorkApp4 {
 
     }
 
-    //ол-во ячеек для выигрыша
+    //ол-во ячеек для выигрыша, задумка в том что бы он автоматически посчитал что для поля 3 на 3 надо 3 победных ячейки,
+    // а для 5 на 5 - 4 ячейки, что бы не менять это вручную, нооо поле может быть больше и по этому методу выигришное
+    // колличество ячеек на 1 меньше размера поля, так что это метод потдит только для ДЗ
+
     public static void setSeriesWin(int seriesWin) {
         if (fieldSizeH == 3) {
             seriesWin = 3;
         } else {
-            seriesWin = fieldSizeH - 1;
+            seriesWin = 4;
         }
+
         System.out.println("ЗАПОЛЕНЫХ ЯЧЕЕК ДЛЯ ПОБЕДЫ НУЖНО: " + seriesWin);
     }
+
 
     public static void turnX() {
 
@@ -90,6 +97,11 @@ public class HomeWorkApp4 {
 
     // ХОД ПК
     public static void turnO() {
+        if (turnPCWinCell()){
+            return;
+        } if (turnXWinCell()){
+            return;
+        }
         int x;
         int y;
         System.out.println("ХОД ИГРОКА > " + pcChar);
@@ -102,6 +114,41 @@ public class HomeWorkApp4 {
         field[y][x] = pcChar;
 
     }
+
+
+
+    public static boolean turnPCWinCell(){
+        for (int i = 0; i < seriesWin; i ++){
+            for (int j = 0; j < seriesWin; j++){
+                if (checkEmptyFieldCell(j, i)){
+                    field[i][j] = pcChar;
+                    if (checkWin(pcChar)) {
+                        return true;
+                    }
+                    field[i][j] =emptyChar;
+                }
+
+            }
+        }
+        return false;
+    }
+
+    public static boolean turnXWinCell(){
+        for (int i = 0; i < seriesWin; i ++){
+            for (int j = 0; j < seriesWin; j++){
+                if (checkEmptyFieldCell(j, i)){
+                    field[i][j] = playerChar;
+                    if (checkWin(playerChar)) {
+                        return true;
+                    }
+                    field[i][j] =emptyChar;
+                }
+
+            }
+        }
+        return false;
+    }
+
 
     public static int getValueFromUser(String msg) {
         System.out.print(msg + " > ");
@@ -152,29 +199,40 @@ public class HomeWorkApp4 {
 //        return false;
 
         // горизонталь-вертикаль
+        for (int i = 0; i < fieldSizeH; i++) {
+            for (int j = 0; j < fieldSizeW; j++) {
 
-        boolean ver = true; // логическа операция между i j (&=)
-        boolean hor = true;
-        boolean right = true;
-        boolean left = true;
+                // х
+                if (checkVector(i, j, 1, 0, seriesWin, checkChar)) return true;
 
-        for (int i = 0; i < seriesWin; i++) {
-            for (int j = 0; j < seriesWin; j++) {
-                ver &= (field[i][j] == checkChar);
-                hor &= (field[j][i] == checkChar);
+                // диагонали х у
+                if (checkVector(i, j, 1, 1, seriesWin, checkChar)) return true;
+
+                //  по у
+                if (checkVector(i, j, 0, 1, seriesWin, checkChar)) return true;
+
+                // диагональ х -у
+                if (checkVector(i, j, 1, -1, seriesWin, checkChar)) return true;
             }
-            if (ver || hor) return true;  // проверка всех остальных столбцов и строк
+        }
+        return false;
+    }
 
+    private static boolean checkVector(int x, int y, int vx, int vy, int len, char checkChar) {
+        int farX = x + (len - 1) * vx;
+        int farY = y + (len - 1) * vy;
+
+        if (!checkEmptyFieldCell (farX, farY)) {
             return false;
         }
 
-        //диагональ
-        for (int i = 0; i < seriesWin; i++){
-                right &= (field[i][i] == checkChar);
-                left &= (field[seriesWin - i - 1][i] == checkChar);
+
+        for (int i = 0; i < len; i++) {
+            if (field[y + i * vy][x + i * vx] != checkChar) {
+                return false;
             }
-            if (right || left) return true;
-            return false;
+        }
+            return true;
         }
 
 
@@ -191,5 +249,8 @@ public class HomeWorkApp4 {
 
 
     }
+
+
+
 
 
