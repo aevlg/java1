@@ -58,7 +58,7 @@ public class HomeWorkApp3 {
         }
     }
      public static void fiveAgg(int len, int initialValue ){
-        int[] fiveAgg = new int[len];
+         int[] fiveAgg = new int[len];
          for (int i = 0; i < fiveAgg.length; i++){
         System.out.print(initialValue + " ");
      }
