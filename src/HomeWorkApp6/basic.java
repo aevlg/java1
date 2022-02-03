@@ -22,13 +22,14 @@ public class basic {
         for (int i = 0; i < animals.length; i++) {
 
             String nameString = animals[i].getType() + " " + animals[i].getName() + " может ";
-            eventName = "пробежать на " + animals[i].getMaxRun() + " м. Пытался пробежать на ";
+            eventName = "пробежать на " + animals[i].getMaxRun() + " м. >>>>>>> пытается пробежать на ";
+
             eventResult = animals[i].run(runLength) ? tempWinEvent : tempLossEvent;
             result(nameString, eventName, runLength, eventResult);
 
 
             int swimResult = animals[i].swim(swimLength);
-            eventName = "проплыть на " + animals[i].getMaxSwim() + " м. Попытка проплыть на ";
+            eventName = "проплыть на " + animals[i].getMaxSwim() + " м. >>>>>>> пытается проплыть на ";
             eventResult = (swimResult == animal.swimLuck) ? tempWinEvent : tempLossEvent;
 
             if (swimResult == animal.swimNone)
