@@ -1,6 +1,6 @@
 package HomeWorkApp7;
 
-public class runner {
+public class GameRunner {
 
         public static void main(String[] args) {
             new GameWindow();
